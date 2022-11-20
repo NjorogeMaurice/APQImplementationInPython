@@ -1,3 +1,9 @@
+
+## @author: Maurice Njoroge
+## APQ implementation in Python
+## Happy Coding!
+
+
 from tkinter import BOTTOM,TOP,Canvas,Tk,Button,RAISED,PhotoImage
 from tkinter.messagebox import showerror, showinfo
 from Names import Names
@@ -101,6 +107,7 @@ class HospitalTriage():
         self.APQ[i]._index = i
         self.APQ[j]._index = j
 
+    ## Upheap function
     def upheap(self,j):
         parent = self.parent(j)
         loc = self.APQ[j]
@@ -112,7 +119,8 @@ class HospitalTriage():
             self.swap(j,parent)
             self.UpdatePos(j,parent)
             self.upheap(parent)
-
+    
+    ## Downheap function
     def downheap(self,j):
         if self.has_left(j):
             left = self.leftChild(j)
@@ -131,7 +139,9 @@ class HospitalTriage():
                 self.swap(j,small_child)
                 self.UpdatePos(small_child,j)
                 self.downheap(small_child)
+    
 
+    ## Add function -- key-value pairs and an additional index for location-awares
     def add(self,key,value):
         ## adding the key-value pairs to the PQ
         if key < 0 and value == "":
@@ -143,7 +153,8 @@ class HospitalTriage():
         self.upheap(len(self.APQ)-1)
 
        
-
+    ## Min function - returns the minimum elemenet in the queue, the minimum element
+    ## is always the first element in the queue
     def min(self):
         ## return the pair with minimum key, but dont remove. Raise an exception if the PQ is empty
         if len(self.APQ)==0:
@@ -151,7 +162,9 @@ class HospitalTriage():
 
         item = self.APQ[0]
         showinfo( "Minimum Entry ",str((item._key,item._value)))
+    
 
+    ## remove min - removes and returns the minimum element in the queue
     def removeMin(self):
 
         if len(self.APQ) == 0:
@@ -176,6 +189,12 @@ class HospitalTriage():
         else:
             self.downheap(j)
 
+
+    ## updateKey function - it updates the key of an entry on location i
+    ## then a downheap or uphead method is called depending
+    ## on the key entered
+
+
     def updateKey(self,loc,newkey):
         ## replacing key
         j = int(loc)
@@ -191,7 +210,9 @@ class HospitalTriage():
         self.Details.insert(j,self.top_panel.create_text(300 + (j * 60), 300, text=self.text.format(key=k._key,value=k._value,index=k._index),font="Purissa"))
         self.top_panel.update()
         self.bubble(j)
+    
 
+    ## Updates value of an entry on location i
     def updateVal(self,loc,newval):
         ## replacing key
         j = int(loc)
@@ -206,7 +227,10 @@ class HospitalTriage():
         self.Details.insert(j,self.top_panel.create_text(300 + (j * 60), 300, text=self.text.format(key=k._key,value=k._value,index=k._index),font="Purissa"))
         self.top_panel.update()
         self.bubble(j)
+    
 
+    ## Removes an entry on location i
+    ## downheap or upheap method is performed
     def remove(self,loc): 
         if not (0 <= loc <= len(self.APQ)):
             return "Invalid locator"
@@ -229,7 +253,9 @@ class HospitalTriage():
             self.top_panel.delete(n)
             self.bubble((loc))  
         return (k._key, k._value)
+    
 
+    ## Returns size of the queue
     def size(self):
         return len(self.APQ)
 
